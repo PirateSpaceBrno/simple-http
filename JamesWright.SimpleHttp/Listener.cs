@@ -18,12 +18,12 @@ namespace JamesWright.SimpleHttp
             this.httpListener = new HttpListener();
         }
 
-        public async Task StartAsync(string port, RouteRepository routeRepository)
+        public async Task StartAsync(string gateway, string port, RouteRepository routeRepository)
         {
-            this.httpListener.Prefixes.Add(string.Format("http://localhost:{0}/", port));
+            this.httpListener.Prefixes.Add(string.Format("http://{0}:{1}/", gateway, port));
             this.httpListener.Start();
 
-            Console.WriteLine("Listening for requests on port {0}.", port);
+            Console.WriteLine("Listening for requests on gateway {0} port {1}.", gateway, port);
 
             Request request = await GetNextRequestAsync();
 

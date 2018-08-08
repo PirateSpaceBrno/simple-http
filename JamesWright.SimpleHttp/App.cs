@@ -16,10 +16,10 @@ namespace JamesWright.SimpleHttp
             this.server = new Server(new Listener(), new RouteRepository());
         }
 
-        public void Start (string port = "8005")
+        public void Start (string gateway = "localhost", int port = 8005)
         {
             AutoResetEvent keepAlive = new AutoResetEvent(false);
-            this.server.StartAsync(port);
+            this.server.StartAsync(gateway, Convert.ToString(port));
             keepAlive.WaitOne();
         }
 
