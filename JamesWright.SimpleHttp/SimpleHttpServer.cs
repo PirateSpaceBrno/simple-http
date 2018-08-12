@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace JamesWright.SimpleHttp
 {
@@ -25,22 +22,22 @@ namespace JamesWright.SimpleHttp
 
         public void Get(string endpoint, Action<Request, Response> handler)
         {
-            this.server.RouteRepository.Get.Add(endpoint, handler);
+            this.server.RouteRepository.Get.Add(new Regex(endpoint), handler);
         }
 
         public void Post(string endpoint, Action<Request, Response> handler)
         {
-            this.server.RouteRepository.Post.Add(endpoint, handler);
+            this.server.RouteRepository.Post.Add(new Regex(endpoint), handler);
         }
 
         public void Put(string endpoint, Action<Request, Response> handler)
         {
-            this.server.RouteRepository.Put.Add(endpoint, handler);
+            this.server.RouteRepository.Put.Add(new Regex(endpoint), handler);
         }
 
         public void Delete(string endpoint, Action<Request, Response> handler)
         {
-            this.server.RouteRepository.Delete.Add(endpoint, handler);
+            this.server.RouteRepository.Delete.Add(new Regex(endpoint), handler);
         }
     }
 }

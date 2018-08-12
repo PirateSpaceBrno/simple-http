@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace JamesWright.SimpleHttp
@@ -40,15 +41,31 @@ namespace JamesWright.SimpleHttp
 
         private async Task<bool> TryRespondAsync(Request request, RouteRepository routeRepository)
         {
-            Dictionary<string, Action<Request, Response>> routes = routeRepository.GetRoutes(request.Method);
+            Dictionary<Regex, Action<Request, Response>> routes = routeRepository.GetRoutes(request.Method);
 
-            if (routes == null || !routes.ContainsKey(request.Endpoint))
+            if (routes == null)
+                return false;
+
+            // Check by Regex match all stored routes, keep it
+            var route = routes.FirstOrDefault(x => x.Key.IsMatch(request.Endpoint));
+            //var route = new KeyValuePair<Regex, Action<Request, Response>>();
+            //foreach (var x in routes)
+            //{
+            //    var dd = request.Endpoint;
+            //    if (x.Key.Match(dd).Success)
+            //    {
+            //        var fgf = "";
+            //    }
+            //}
+
+            if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
                 return false;
 
             // TODO: Thread pooling!
             await Task.Run(() =>
                 {
-                    routes[request.Endpoint](request, new Response(context.Response));
+                    route.Value(request, new Response(context.Response));
+                    //routes[request.Endpoint](request, new Response(context.Response));
                 });
 
             return true;

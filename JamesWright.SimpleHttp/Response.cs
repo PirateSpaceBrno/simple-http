@@ -24,6 +24,7 @@ namespace JamesWright.SimpleHttp
         {
             byte[] responseBuffer = Encoding.UTF8.GetBytes(Content);
             this.httpListenerResponse.ContentType = ContentType;
+            this.httpListenerResponse.ContentEncoding = Encoding.UTF8;
 
             if (this.httpListenerResponse.ContentLength64 == 0)
                 this.httpListenerResponse.ContentLength64 = responseBuffer.Length;
