@@ -19,7 +19,7 @@ namespace JamesWright.SimpleHttp
 
         public async Task StartAsync(string gateway, string port)
         {
-            Console.Write("SimpleHttp server 0.2\n\n");
+            Console.Write("SimpleHttp server 0.3\n\n");
             Console.WriteLine("Initialising server on gateway {0} and port {1}...", gateway, port);
             await this.listener.StartAsync(gateway, port, RouteRepository);
         }

@@ -55,7 +55,14 @@ namespace JamesWright.SimpleHttp
             // TODO: Thread pooling!
             await Task.Run(() =>
                 {
-                    route.Value(request, new Response(context.Response));
+                    try
+                    {
+                        route.Value(request, new Response(context.Response));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"WARN - {ex.Message}");
+                    }
                 });
 
             return true;
