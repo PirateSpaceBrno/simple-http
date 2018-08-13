@@ -48,15 +48,6 @@ namespace JamesWright.SimpleHttp
 
             // Check by Regex match all stored routes, keep it
             var route = routes.FirstOrDefault(x => x.Key.IsMatch(request.Endpoint));
-            //var route = new KeyValuePair<Regex, Action<Request, Response>>();
-            //foreach (var x in routes)
-            //{
-            //    var dd = request.Endpoint;
-            //    if (x.Key.Match(dd).Success)
-            //    {
-            //        var fgf = "";
-            //    }
-            //}
 
             if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
                 return false;
@@ -65,7 +56,6 @@ namespace JamesWright.SimpleHttp
             await Task.Run(() =>
                 {
                     route.Value(request, new Response(context.Response));
-                    //routes[request.Endpoint](request, new Response(context.Response));
                 });
 
             return true;

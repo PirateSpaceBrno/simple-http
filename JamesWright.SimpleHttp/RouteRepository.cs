@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace JamesWright.SimpleHttp
 {
-    class RouteRepository
+    public class RouteRepository
     {
         public Dictionary<Regex, Action<Request, Response>> Get { get; private set; }
         public Dictionary<Regex, Action<Request, Response>> Post { get; private set; }

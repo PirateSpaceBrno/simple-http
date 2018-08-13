@@ -20,6 +20,7 @@ namespace JamesWright.SimpleHttp
 
         public string[] Parameters { get; private set; }
 
+
         public string Endpoint
         {
             get { return this.httpRequest.RawUrl; }

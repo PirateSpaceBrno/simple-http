@@ -7,10 +7,12 @@ namespace JamesWright.SimpleHttp
     public class SimpleHttpServer
     {
         private Server server;
+        private RouteRepository routeRepository;
 
         public SimpleHttpServer()
         {
-            this.server = new Server(new Listener(), new RouteRepository());
+            routeRepository = new RouteRepository();
+            this.server = new Server(new Listener(), routeRepository);
         }
 
         public void Start (string gateway = "localhost", int port = 8005)
@@ -39,5 +41,7 @@ namespace JamesWright.SimpleHttp
         {
             this.server.RouteRepository.Delete.Add(new Regex(endpoint), handler);
         }
+
+        public RouteRepository RouteRepository => routeRepository;
     }
 }
