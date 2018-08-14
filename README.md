@@ -74,7 +74,7 @@ Adds a handler for a HTTP PUT request to the requested endpoint matched by regex
 ##### `void Delete(string endpointRegex, Action<Request, Response> handler)` ######
 Adds a handler for a HTTP DELETE request to the requested endpoint matched by regex.
 
-##### `void Start(string gateway = "localhost", int port = 8005)`#####
+##### `void Start(string gateway = "localhost", int port = 8005)` ######
 Initialises the server and its underlying listener. Port number and listening gateway can be optionally specified.
 
 ### `Request` ###
@@ -84,13 +84,13 @@ A HTTP request, and its underlying information, that is sent to the server.
 ##### `string Endpoint { get; }` ######
 Returns the endpoint that the Request instance represents e.g. "/".
 
-##### `string[] Parameters { get; }`#####
+##### `string[] Parameters { get; }` ######
 Contains the parameters sent with the HTTP request. Currently not populated.
 
 ##### `async Task<string> GetBodyAsync()` ######
 Returns the request's body asynchronously.
 
-##### `NameValueCollection Headers { get; }` #####
+##### `NameValueCollection Headers { get; }` ######
 Returns collection of request headers.
 
 ##### `string[] UserLanguages { get; }` #####
@@ -106,10 +106,10 @@ A response to be sent to the user.
 ##### `string Content { get; set; }` ######
 The body content to be returned to the user.
 
-##### `string ContentType { get; set; }`#####
+##### `string ContentType { get; set; }` ######
 The Internet media type (MIME) of the response e.g. "application/json".
 
-##### `int StatusCode { get; set; }`#####
+##### `int StatusCode { get; set; }` ######
 Status code for response. Default is 200=OK.
 
 ##### `async Task SendAsync()` #####
