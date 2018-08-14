@@ -20,6 +20,17 @@ namespace JamesWright.SimpleHttp
             this.httpListenerResponse = httpListenerResponse;
         }
 
+        public int StatusCode
+        {
+            get
+            {
+                return this.httpListenerResponse.StatusCode;
+            }
+            set {
+                this.httpListenerResponse.StatusCode = value;
+            }
+        }
+
         public async Task SendAsync()
         {
             byte[] responseBuffer = Encoding.UTF8.GetBytes(Content);

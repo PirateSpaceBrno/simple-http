@@ -50,7 +50,30 @@ namespace JamesWright.SimpleHttp
             var route = routes.FirstOrDefault(x => x.Key.IsMatch(request.Endpoint));
 
             if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
+            {
+                var a = new Action<Request, Response>(async (req, res) =>
+                {
+                    res.Content = "Error 404 - Not found";
+                    res.ContentType = "text/html; charset=utf-8";
+                    res.StatusCode = 404;
+                    await res.SendAsync();
+                });
+                var x = new KeyValuePair<Regex, Action<Request, Response>>(new Regex(""), a);
+
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        x.Value(request, new Response(context.Response));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"WARN - {ex.Message}");
+                    }
+                });
+
                 return false;
+            }
 
             // TODO: Thread pooling!
             await Task.Run(() =>
