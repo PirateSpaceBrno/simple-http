@@ -22,28 +22,28 @@ I'm not actively developing this project at present, but I want to revive it. It
             {
                 App app = new App();
     
-                app.Get("/", async (req, res) =>
+                app.Get(@"^/$", async (req, res) =>
                 {
                     res.Content = "<p>You did a GET.</p>";
                     res.ContentType = "text/html";
                     await res.SendAsync();
                 });
     
-                app.Post("/", async (req, res) =>
+                app.Post(@"^/$", async (req, res) =>
                 {
                     res.Content = "<p>You did a POST: " + await req.GetBodyAsync() + "</p>";
                     res.ContentType = "text/html";
                     await res.SendAsync();
                 });
 
-                app.Put("/", async (req, res) =>
+                app.Put(@"^/$", async (req, res) =>
                 {
                     res.Content = "<p>You did a PUT: " + await req.GetBodyAsync() + "</p>";
                     res.ContentType = "text/html";
                     await res.SendAsync();
                 });
     
-                app.Delete("/", async (req, res) =>
+                app.Delete(@"^/$", async (req, res) =>
                 {
                     res.Content = "<p>You did a DELETE: " + await req.GetBodyAsync() + "</p>";
                     res.ContentType = "text/html";
@@ -62,20 +62,20 @@ I'm not actively developing this project at present, but I want to revive it. It
 Represents an application, served over HTTP, and the requests for which it will listen.
 
 #### Public properties and methods #####
-##### `void Get(string endpoint, Action<Request, Response> handler)` ######
-Adds a handler for a HTTP GET request to the requested endpoint.
+##### `void Get(string endpointRegex, Action<Request, Response> handler)` ######
+Adds a handler for a HTTP GET request to the requested endpoint matched by regex.
 
-##### `void Post(string endpoint, Action<Request, Response> handler)` ######
-Adds a handler for a HTTP POST request to the requested endpoint.
+##### `void Post(string endpointRegex, Action<Request, Response> handler)` ######
+Adds a handler for a HTTP POST request to the requested endpoint matched by regex.
 
-##### `void Put(string endpoint, Action<Request, Response> handler)` ######
-Adds a handler for a HTTP PUT request to the requested endpoint.
+##### `void Put(string endpointRegex, Action<Request, Response> handler)` ######
+Adds a handler for a HTTP PUT request to the requested endpoint matched by regex.
 
-##### `void Delete(string endpoint, Action<Request, Response> handler)` ######
-Adds a handler for a HTTP DELETE request to the requested endpoint.
+##### `void Delete(string endpointRegex, Action<Request, Response> handler)` ######
+Adds a handler for a HTTP DELETE request to the requested endpoint matched by regex.
 
-##### `void Start(string portNumber = "8005")`#####
-Initialises the server and its underlying listener. Port number can be optionally specified.
+##### `void Start(string gateway = "localhost", int port = 8005)`#####
+Initialises the server and its underlying listener. Port number and listening gateway can be optionally specified.
 
 ### `Request` ###
 A HTTP request, and its underlying information, that is sent to the server.
@@ -90,6 +90,15 @@ Contains the parameters sent with the HTTP request. Currently not populated.
 ##### `async Task<string> GetBodyAsync()` ######
 Returns the request's body asynchronously.
 
+##### `NameValueCollection Headers { get; }` #####
+Returns collection of request headers.
+
+##### `string[] UserLanguages { get; }` #####
+Returns list of user languages (from browser).
+
+##### `NetworkCredential UserIdentity { get; }` #####
+Returns object with credentials grabbed from Authorization header.
+
 ### `Response` ###
 A response to be sent to the user.
 
@@ -99,6 +108,9 @@ The body content to be returned to the user.
 
 ##### `string ContentType { get; set; }`#####
 The Internet media type (MIME) of the response e.g. "application/json".
+
+##### `int StatusCode { get; set; }`#####
+Status code for response. Default is 200=OK.
 
 ##### `async Task SendAsync()` #####
 Sends the response asynchronously.
