@@ -15,7 +15,7 @@ namespace JamesWright.SimpleHttp
             this.server = new Server(new Listener(), routeRepository);
         }
 
-        public void Start (string gateway = "localhost", int port = 8005)
+        public void Start(string gateway = "localhost", int port = 8005)
         {
             AutoResetEvent keepAlive = new AutoResetEvent(false);
             this.server.StartAsync(gateway, Convert.ToString(port));
