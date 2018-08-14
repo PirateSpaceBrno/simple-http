@@ -47,22 +47,14 @@ namespace JamesWright.SimpleHttp
             // Check by Regex match all stored routes, keep it
             var route = routes.FirstOrDefault(x => x.Key.IsMatch(request.Endpoint));
 
+            // If route does not exist, return 404
             if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
             {
-                var a = new Action<Request, Response>(async (req, res) =>
-                {
-                    res.Content = "Error 404 - Not found";
-                    res.ContentType = "text/html; charset=utf-8";
-                    res.StatusCode = 404;
-                    await res.SendAsync();
-                });
-                var x = new KeyValuePair<Regex, Action<Request, Response>>(new Regex(""), a);
-
                 await Task.Run(() =>
                 {
                     try
                     {
-                        x.Value(request, new Response(context.Response));
+                        Actions.Error404(request, new Response(context.Response));
                     }
                     catch (Exception ex)
                     {

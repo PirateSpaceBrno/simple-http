@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -26,20 +27,36 @@ namespace JamesWright.SimpleHttp
         {
             this.server.RouteRepository.Get.Add(new Regex(endpoint), handler);
         }
+        public void Get(KeyValuePair<Regex, Action<Request, Response>> endpointHandler)
+        {
+            this.server.RouteRepository.Get.Add(endpointHandler.Key, endpointHandler.Value);
+        }
 
         public void Post(string endpoint, Action<Request, Response> handler)
         {
             this.server.RouteRepository.Post.Add(new Regex(endpoint), handler);
+        }
+        public void Post(KeyValuePair<Regex, Action<Request, Response>> endpointHandler)
+        {
+            this.server.RouteRepository.Post.Add(endpointHandler.Key, endpointHandler.Value);
         }
 
         public void Put(string endpoint, Action<Request, Response> handler)
         {
             this.server.RouteRepository.Put.Add(new Regex(endpoint), handler);
         }
+        public void Put(KeyValuePair<Regex, Action<Request, Response>> endpointHandler)
+        {
+            this.server.RouteRepository.Put.Add(endpointHandler.Key, endpointHandler.Value);
+        }
 
         public void Delete(string endpoint, Action<Request, Response> handler)
         {
             this.server.RouteRepository.Delete.Add(new Regex(endpoint), handler);
+        }
+        public void Delete(KeyValuePair<Regex, Action<Request, Response>> endpointHandler)
+        {
+            this.server.RouteRepository.Delete.Add(endpointHandler.Key, endpointHandler.Value);
         }
 
         public RouteRepository RouteRepository => routeRepository;
