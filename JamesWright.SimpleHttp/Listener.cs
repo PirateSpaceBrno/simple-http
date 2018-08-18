@@ -70,7 +70,10 @@ namespace JamesWright.SimpleHttp
                 {
                     try
                     {
-                        route.Value(request, new Response(context.Response));
+                        var response = context.Response;
+                        response.AppendHeader("Access-Control-Allow-Origin", "*");
+
+                        route.Value(request, new Response(response));
                     }
                     catch (Exception ex)
                     {
