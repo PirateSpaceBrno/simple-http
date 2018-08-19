@@ -71,6 +71,12 @@ namespace JamesWright.SimpleHttp
                     try
                     {
                         var response = context.Response;
+                        if (request.Method == "OPTIONS")
+                        {
+                            response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                            response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                            response.AddHeader("Access-Control-Max-Age", "1728000");
+                        }
                         response.AppendHeader("Access-Control-Allow-Origin", "*");
 
                         route.Value(request, new Response(response));
