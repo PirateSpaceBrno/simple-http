@@ -44,8 +44,11 @@ namespace JamesWright.SimpleHttp
             if (routes == null)
                 return false;
 
+            var endpoint = request.Endpoint;
+            endpoint = endpoint.Split('?')[0];
+
             // Check by Regex match all stored routes, keep it
-            var route = routes.FirstOrDefault(x => x.Key.IsMatch(request.Endpoint));
+            var route = routes.FirstOrDefault(x => x.Key.IsMatch(endpoint));
 
             // If route does not exist, return 404
             if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
