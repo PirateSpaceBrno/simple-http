@@ -12,6 +12,14 @@ namespace JamesWright.SimpleHttp
             await res.SendAsync();
         });
 
+        public static Action<Request, Response> Options200 = new Action<Request, Response>(async (req, res) =>
+        {
+            res.Content = "";
+            res.ContentType = ContentTypes.Html;
+            res.StatusCode = StatusCodes.Success.Ok;
+            await res.SendAsync();
+        });
+
         public static object FirstOrDefault(Func<object, bool> p)
         {
             throw new NotImplementedException();

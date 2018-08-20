@@ -41,24 +41,40 @@ namespace JamesWright.SimpleHttp
         {
             Dictionary<Regex, Action<Request, Response>> routes = routeRepository.GetRoutes(request.Method);
 
-            if (routes == null)
+            // Enable CORS
+            var response = context.Response;
+            response.AddHeader("Access-Control-Allow-Origin", "*");
+            response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With");
+
+            if (routes == null && request.Method != Methods.Options)
+            {
                 return false;
+            }
 
             var endpoint = request.Endpoint;
             endpoint = endpoint.Split('?')[0];
 
             // Check by Regex match all stored routes, keep it
-            var route = routes.FirstOrDefault(x => x.Key.IsMatch(endpoint));
+            KeyValuePair < Regex, Action < Request, Response >> route = new KeyValuePair<Regex, Action<Request, Response>>();
+            if (request.Method != Methods.Options)
+            {
+                route = routes.FirstOrDefault(x => x.Key.IsMatch(endpoint));
+            }
+            else
+            {
+                route = routeRepository.GetRoutes(Methods.Get).FirstOrDefault(x => x.Key.IsMatch("/"));
+            }
 
-            // If route does not exist, return 404
+            // If route does not exist, return 404 
             if (route.Equals(new KeyValuePair<Regex, Action<Request, Response>>()))
             {
                 await Task.Run(() =>
                 {
                     try
                     {
-                        Actions.Error404(request, new Response(context.Response));
+                        Actions.Error404(request, new Response(response));
                     }
+
                     catch (Exception ex)
                     {
                         Console.WriteLine($"WARN - {ex.Message}");
@@ -73,15 +89,7 @@ namespace JamesWright.SimpleHttp
                 {
                     try
                     {
-                        var response = context.Response;
-                        if (request.Method == "OPTIONS")
-                        {
-                            response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-                            response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
-                            response.AddHeader("Access-Control-Max-Age", "1728000");
-                        }
-                        response.AppendHeader("Access-Control-Allow-Origin", "*");
-
+                        
                         route.Value(request, new Response(response));
                     }
                     catch (Exception ex)
